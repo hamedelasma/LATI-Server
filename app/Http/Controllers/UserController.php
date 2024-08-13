@@ -14,7 +14,7 @@ class UserController extends Controller
             'name' => ['string', 'required'],
             'phone' => ['required', 'string', 'unique:users,phone', 'min:9', 'max:10'],
             'gender' => ['required', 'in:male,female'],
-            'DOB' => ['required', 'date_format:Ymd'],
+            'DOB' => ['required', 'date'],
             'password' => ['required', 'string'],
             'avatar_url' => ['nullable']
         ]);
@@ -23,7 +23,7 @@ class UserController extends Controller
             'phone' => $input['phone'],
             'gender' => $input['gender'],
             'DOB' => $input['DOB'],
-            'avatar_url' => $input['avatar_url'],
+            'avatar_url' => $input['avatar_url'] ?? null,
             'password' => Hash::make($input['password'])
         ]);
 
