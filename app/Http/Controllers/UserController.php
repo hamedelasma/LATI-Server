@@ -31,4 +31,48 @@ class UserController extends Controller
             'data' => 'user registered successfully'
         ]);
     }
+
+    public function login(Request $request)
+    {
+        $credentials = request(['phone', 'password']);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
+
+    public function logout()
+    {
+        auth('api')->logout();
+
+        return response()->json(['data' => 'Successfully logged out']);
+
+    }
+
+    public function user()
+    {
+        $user = auth()->user();
+
+        return response()->json([
+            'data' => $user
+        ]);
+    }
+
+    public function refresh()
+    {
+        $token = auth()->refresh();
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+
+    }
 }
+
+
