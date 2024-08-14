@@ -14,6 +14,11 @@ class ServerController extends Controller
         $inputs = $request->validate([
             'name' => ['required', 'string'],
         ]);
+        if (Server::where('user_id', '=', auth()->id())->exists()) {
+            return response()->json([
+                'data' => 'you can not create more then one server'
+            ], 422);
+        }
         $code = $this->generateCode();
         auth()->user()->servers()->create([
             'code' => $code,
@@ -29,7 +34,7 @@ class ServerController extends Controller
 
     public function index()
     {
-        $servers = Server::where('user_id','=', auth()->id())->get();
+        $servers = Server::where('user_id', '=', auth()->id())->get();
         return response()->json([
             'data' => $servers
         ]);
