@@ -5,6 +5,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UploaderController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserTaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::get('user', [UserController::class, 'user']);
     Route::post('refresh', [UserController::class, 'refresh']);
-    Route::put('users/update',[UserController::class,'update']);
+    Route::put('users/update', [UserController::class, 'update']);
+
+    Route::post('users/tasks', [UserTaskController::class, 'store']);
+    Route::delete('users/tasks',[UserTaskController::class,'destroy']);
 
     Route::post('servers', [ServerController::class, 'store']);
     Route::get('servers', [ServerController::class, 'index']);
