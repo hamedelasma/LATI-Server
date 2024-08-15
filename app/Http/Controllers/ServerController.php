@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Server;
+use App\Models\ServerUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -73,6 +74,7 @@ class ServerController extends Controller
             'message' => 'server deleted successfully'
         ]);
     }
+
 
 
     private function generateCode(): string

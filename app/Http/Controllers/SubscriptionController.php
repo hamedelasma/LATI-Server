@@ -39,13 +39,40 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function index($code)
+    public function index($code, Request $request)
     {
         $server = auth()->user()->subscriptions()
             ->where('code', '=', $code)
             ->firstOrFail();
+//        if ($request->has('phone')) {
+//            $phone = $request->get('phone');
+//            $users = $server->subscribers()
+//                ->where('phone', 'like', '%' . $phone . '%')
+//                ->get();
+//            return response()->json([
+//                'data' => $users
+//            ]);
+//        }
+//        if ($request->has('user_id')) {
+//            $userId = $request->input('user_id');
+//            $users = $server->subscribers()
+//                ->where('users.id', '=', $userId)
+//                ->get();
+//            return response()->json([
+//                'data' => $users
+//            ]);
+//        }
 
-        $users = $server->subscribers;
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $users = $server->subscribers()
+                ->where('users.id', '=', $search)
+                ->orWhere('users.name', 'like', '%' . $search . '%')
+                ->orWhere('phone', 'like', '%' . $search . '%')
+                ->get();
+        } else {
+            $users = $server->subscribers;
+        }
 
         return response()->json([
             'data' => $users
