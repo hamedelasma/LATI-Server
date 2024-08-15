@@ -71,7 +71,20 @@ class UserController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
 
+    public function update(Request $request)
+    {
+        $inputs = $request->validate([
+            'name' => ['string'],
+            'avatar_url' => ['string']
+        ]);
+
+        auth()->user()->update($inputs);
+
+        return response()->json([
+            'data' => 'user updated successfully'
+        ]);
     }
 }
 
