@@ -31,7 +31,7 @@ class TaskController extends Controller
     {
         $tasks = auth()->user()->subscriptions()
             ->where('code', '=', $code)
-            ->firstOrFail()->tasks()->get();
+            ->firstOrFail()->tasks()->with('server')->get();
 
         return response()->json([
             'data' => $tasks

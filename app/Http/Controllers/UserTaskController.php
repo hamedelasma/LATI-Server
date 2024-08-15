@@ -58,4 +58,24 @@ class UserTaskController extends Controller
         ]);
 
     }
+
+    public function update(Request $request, $task_id)
+    {
+
+        $input = $request->validate([
+            'status' => ['string', 'in:Not-Started,In-Progress,Completed,Cancelled']
+        ]);
+
+
+        $task = auth()->user()->tasks()->findOrFail($task_id);
+
+        $task->update([
+            'status' => $input['status']
+        ]);
+
+        return response()->json([
+            'data' => 'Task status updated'
+        ]);
+
+    }
 }
