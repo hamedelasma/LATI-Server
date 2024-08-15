@@ -21,10 +21,12 @@ class ServerController extends Controller
             ], 422);
         }
         $code = $this->generateCode();
-        auth()->user()->servers()->create([
+        $server = auth()->user()->servers()->create([
             'code' => $code,
             'name' => $inputs['name']
         ]);
+        $server->subscribers()->attach(auth()->id());
+
         return response()->json([
             'message' => 'server created successfully',
             'code' => $code
@@ -43,8 +45,8 @@ class ServerController extends Controller
 
     public function show($code)
     {
-        $server = Server::where('user_id', auth()->id())
-            ->where('code', $code)
+        $server = auth()->user()->subscriptions()
+            ->where('code','=',$code)
             ->firstOrFail();
         return response()->json([
             'data' => $server
@@ -74,7 +76,6 @@ class ServerController extends Controller
             'message' => 'server deleted successfully'
         ]);
     }
-
 
 
     private function generateCode(): string

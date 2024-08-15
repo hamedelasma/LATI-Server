@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class TaskController extends Controller
 {
 
-    public function store(Request $request)
+    public function store(Request $request, $code)
     {
         $inputs = $request->validate([
             'name' => ['required', 'string'],
@@ -19,17 +19,18 @@ class TaskController extends Controller
         ]);
 
         auth()->user()
-            ->servers()->firstOrFail()
-            ->tasks()->create($inputs);
+            ->subscriptions()->where('code', '=', $code)
+            ->firstOrFail()->tasks()->create($inputs);
 
         return response()->json([
             'data' => 'task created successfully'
         ]);
     }
 
-    public function index()
+    public function index($code)
     {
-        $tasks = auth()->user()->servers()
+        $tasks = auth()->user()->subscriptions()
+            ->where('code', '=', $code)
             ->firstOrFail()->tasks()->get();
 
         return response()->json([
