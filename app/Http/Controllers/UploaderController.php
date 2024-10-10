@@ -13,7 +13,7 @@ class UploaderController extends Controller
             'img' => ['required', 'mimes:jpg,png', 'max:1024']
         ]);
 
-        $img = $request->file('img')->store('/avatars', 'public');
+        $img = $request->file('img')?->store('/avatars', 'public');
 
         return response()->json([
             'message' => 'image uploaded successfully',

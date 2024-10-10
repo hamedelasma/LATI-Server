@@ -21,6 +21,7 @@ class ServerController extends Controller
             ], 422);
         }
         $code = $this->generateCode();
+
         $server = auth()->user()->servers()->create([
             'code' => $code,
             'name' => $inputs['name']

@@ -56,6 +56,8 @@ class UserController extends Controller
     public function user()
     {
         $user = auth()->user();
+        //add base url
+        $user->avatar_url = url('storage/' . $user->avatar_url);
 
         return response()->json([
             'data' => $user

@@ -40,9 +40,6 @@ class TaskController extends Controller
 
     public function show($id)
     {
-//        $task = Task::where('id', '=', $id)
-//            ->where('server_id', '=', auth()->user()->servers()->firstOrFail()->id)
-//            ->firstOrFail();
         $task = auth()->user()
             ->servers()->firstOrFail()
             ->tasks()->findOrFail($id);
